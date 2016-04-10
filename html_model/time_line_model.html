@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>时光轴</title>
+<style type="text/css">
+
+    div{
+	position:relative
+}
+    
+	a{color:#000}
+	a:hover{color:#39F}
+	 .photo{
+	 ;border:10px  solid  white;}
+   .photo_map{
+   ;border:10px  solid  white}
+	
+</style>
+</head>
+
+<body style=" background:#999"> 
+<div style="letter-spacing:50px;line-height:90px; background:#999; padding-top:20px;
+   padding-right:20px;
+   padding-bottom:15px;
+   padding-left:20px; 
+   height: 10500px">
+
+<div id = 'main_div'>
+{for_img}
+
+</div>
+</div>
+
+
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=&amp;style=3&amp;fs=4&amp;textcolor=#fff&amp;bgcolor=#000&amp;text=分享到"></script>
+           
+      <table width="1024" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td height="30" align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0033FF" class="txt1">Copyright2014 BUCT 杨磊</font></td>
+  </tr>
+  <tr>
+    <td height="30" align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0033FF" class="txt1">All Rights Reserved</font></td>
+  </tr>
+  <tr>
+    <td height="30" align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#0033FF"><a color="#0033FF" href="mailto:ylxx@live.com" class="nav">Email:ylxx@live.com</a></font></td>
+  </tr>
+</table>
+
+
+
+<div id="big_pic" style="position:absolute;top:0px;left:0px;width:inherit; height:inherit;"  >
+
+</div>
+
+<div id="debug" style="width:600px;position:fixed;top:5%;left:20%;background:white ;  opacity: 0.5" >
+
+</div>
+<script type="text/javascript">
+var pics = new Array()
+var now_src
+
+var _pics = document.getElementById('main_div').getElementsByTagName("img")
+var len_pics = _pics.length
+for (var i = 0; i <len_pics; i++) {
+    pics.push(_pics[i].id)
+}
+function debug(x){
+var div = document.getElementById('debug');
+div.innerHTML = div.innerHTML+'\n\n'+x
+
+}
+function open_pic(href) {
+    //alert(href)
+    var div = document.getElementById('big_pic');
+    var style = document.getElementById(href).style;
+    var x = Number( style.width.slice(0,-2));
+    var y = Number( style.height.slice(0,-2));
+    var _x = document.body.clientWidth;
+    var _y = document.body.clientHeight;
+    var _width = 80.0;
+    var _height = _width * y * _x / (x * _y)
+    var top = document.body.scrollTop+0
+    var left = document.body.scrollLeft+0
+
+    var new_s = '<img class="photo_map" id ="now_pic" src="'+href+'" style="width:'+_x*0.01*_width+'px;height:'+ _y*0.01*_height +'px;position:absolute;top: '+top+'px;left:'+(left+_x*0.01*(100-_width)/2)+'px"  onclick="close_pic()">';
+    var botton = '<img src="close_botton.png" style="width:50px;position:fixed;top:5%;left:90%"  onclick="close_pic()">';
+    var black_div = '<div id="black_ground" style="position:fixed;top:-5px;left:-5px;width:'+(_x+100)+'px; height:'+(4000)+'px;background: #000;opacity: 0.8"   onclick="close_pic()"></div>';
+    var botton =  '';
+
+    var left_div = '<div id="pre_pic" style="position:fixed;top:0px;left:'+(_x*0.1)+'px;width:'+(_x*0.25)+'px; height:'+(4000)+'px;background: white;opacity: 0" onclick="pre_pic()"></div>';    
+    var right_div = '<div id="right_pic" style="position:fixed;top:0px;left:'+(_x*0.65+20)+'px;width:'+(_x*0.25)+'px; height:'+(4000)+'px;background: white;opacity: 0" onclick="next_pic()"></div>';
+    window.now_src =  href
+    //debug(top)
+    div.innerHTML = black_div+new_s+botton+left_div+right_div;
+    //div.setAttribute('style','background:#000');
+    //alert(div.id);
+}
+
+function get_index(id){
+var len_pics = window.pics.length
+for (var i = 0; i <len_pics; i++) {
+    //debug(id);debug(window.pics[i]);
+    if (id == window.pics[i]){  return i}
+
+       
+}
+
+
+}
+function next_pic(){
+    //var now_pic = document.getElementById('now_pic');
+    var src = window.now_src
+    var index = get_index(src)
+    var id = window.pics[(index+1)%window.pics.length]
+
+    open_pic(id)
+    }
+
+    function pre_pic(){
+    //var now_pic = document.getElementById('now_pic');
+    var src = window.now_src
+    var index = get_index(src)
+    var id = window.pics[(index+window.pics.length-1)%window.pics.length]
+
+    open_pic(id)
+    }
+function close_pic(){
+    var div = document.getElementById('big_pic');
+    div.innerHTML = "";
+
+}
+function _open_pic(href) {
+    var img = new Image();
+    img.dynsrc = href;
+    alert(img.fileSize);
+}
+
+</script>
+
+</body>
+</html>
